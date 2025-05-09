@@ -1,3 +1,4 @@
+
 import { IrrigationCycle, IrrigationFormValues } from "@/types/irrigation";
 
 // Convert military time string to minutes since midnight
@@ -91,16 +92,32 @@ export const updateScheduleStatus = (schedule: IrrigationCycle[]): IrrigationCyc
   
   const currentMinutes = timeToMinutes(currentTimeString);
   
-  return schedule.map(cycle => {
+  // Group cycles by their status to maintain consistency
+  let doneCount = 0;
+  let inProgressIndex = -1;
+  
+  return schedule.map((cycle, idx) => {
     const startMinutes = timeToMinutes(cycle.startTime);
     const endMinutes = timeToMinutes(cycle.endTime);
+    
+    // Check if this cycle should be marked as "Done"
+    if (doneCount > 0 && idx <= doneCount) {
+      return { ...cycle, status: "Done" };
+    }
+    
+    // Check if we already have an in-progress cycle
+    if (inProgressIndex !== -1 && inProgressIndex !== idx) {
+      return { ...cycle, status: "Pending" };
+    }
     
     let status: "Done" | "In Progress" | "Pending";
     
     if (currentMinutes > endMinutes) {
       status = "Done";
+      doneCount = idx;
     } else if (currentMinutes >= startMinutes && currentMinutes <= endMinutes) {
       status = "In Progress";
+      inProgressIndex = idx;
     } else {
       status = "Pending";
     }
@@ -108,3 +125,4 @@ export const updateScheduleStatus = (schedule: IrrigationCycle[]): IrrigationCyc
     return { ...cycle, status };
   });
 };
+

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,8 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   const [plots, setPlots] = useState<string[]>([]);
   const [liveSchedule, setLiveSchedule] = useState<IrrigationCycle[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [lastCompletedIndex, setLastCompletedIndex] = useState(-1);
+  const [processingIndex, setProcessingIndex] = useState(-1);
   const itemsPerPage = 7;
 
   // Update plots list when schedule changes
@@ -39,20 +42,62 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
     
       // Initialize with fresh schedule
       const initialLiveSchedule = [...schedule];
-      setLiveSchedule(updateScheduleStatus(initialLiveSchedule));
+      
+      // Reset tracking variables when new schedule is set
+      setLastCompletedIndex(-1);
+      setProcessingIndex(-1);
+      
+      setLiveSchedule(initialLiveSchedule);
     }
   }, [schedule]);
 
-  // Real-time status updates
+  // Real-time status updates with proper sequencing
   useEffect(() => {
     if (!schedule.length) return;
     
     const intervalId = setInterval(() => {
-      setLiveSchedule((prevSchedule) => updateScheduleStatus(prevSchedule));
-    }, 10000); // Update every 10 seconds
+      setLiveSchedule(prev => {
+        // Find the current in-progress cycle if any
+        const inProgressIndex = prev.findIndex(cycle => cycle.status === "In Progress");
+        
+        // If no cycle is in progress, start the next pending one
+        if (inProgressIndex === -1) {
+          const nextPendingIndex = prev.findIndex(
+            (cycle, idx) => cycle.status === "Pending" && idx > lastCompletedIndex
+          );
+          
+          if (nextPendingIndex !== -1) {
+            const updated = [...prev];
+            updated[nextPendingIndex].status = "In Progress";
+            setProcessingIndex(nextPendingIndex);
+            return updated;
+          }
+          return prev;
+        } 
+        
+        // Check if current in-progress cycle should be marked as done
+        // (we're simulating completion after a few seconds)
+        if (inProgressIndex !== -1 && processingIndex === inProgressIndex) {
+          // Simulate random completion time between 5-15 seconds
+          const now = new Date().getTime();
+          const cycleStartTime = parseInt(prev[inProgressIndex].startTime);
+          const cycleCompletionTime = 5000 + Math.random() * 10000; // 5-15 seconds in ms
+          
+          if (processingIndex !== -1 && Math.random() > 0.7) {
+            const updated = [...prev];
+            updated[inProgressIndex].status = "Done";
+            setLastCompletedIndex(inProgressIndex);
+            setProcessingIndex(-1);
+            return updated;
+          }
+        }
+        
+        return prev;
+      });
+    }, 2000); // Update every 2 seconds
     
     return () => clearInterval(intervalId);
-  }, [schedule]);
+  }, [schedule, lastCompletedIndex, processingIndex]);
 
   // Apply filters
   useEffect(() => {
