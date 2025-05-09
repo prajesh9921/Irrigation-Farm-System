@@ -64,24 +64,25 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
       }
 
       // Generate and set schedule
-      const schedule = generateSchedule(formData);
-      setSchedule(schedule);
+      const generatedSchedule = generateSchedule(formData);
+      console.log("Generated schedule:", generatedSchedule);
+      setSchedule(generatedSchedule);
       toast.success("Schedule generated successfully!");
     } catch (error) {
+      console.error("Error generating schedule:", error);
       toast.error("Error generating schedule. Please check your inputs.");
-      console.error(error);
     }
   };
 
   return (
-    <Card className="shadow-md">
-      <CardHeader>
-        <CardTitle className="text-xl">Irrigation Configuration</CardTitle>
+    <Card className="shadow-md bg-white rounded-xl">
+      <CardHeader className="border-b border-gray-100">
+        <CardTitle className="text-xl text-gray-700">Irrigation Configuration</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="numberOfPlots">Number of Plots</Label>
+            <Label htmlFor="numberOfPlots" className="text-gray-600">Number of Plots</Label>
             <Input
               id="numberOfPlots"
               name="numberOfPlots"
@@ -89,11 +90,12 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
               value={formData.numberOfPlots}
               onChange={handleChange}
               min="1"
+              className="border-gray-200"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="motorsInParallel">Motors in Parallel</Label>
+            <Label htmlFor="motorsInParallel" className="text-gray-600">Motors in Parallel</Label>
             <Input
               id="motorsInParallel"
               name="motorsInParallel"
@@ -101,35 +103,38 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
               value={formData.motorsInParallel}
               onChange={handleChange}
               min="1"
+              className="border-gray-200"
             />
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="startTime">Start Time (HHMMSS)</Label>
+              <Label htmlFor="startTime" className="text-gray-600">Start Time (HHMMSS)</Label>
               <Input
                 id="startTime"
                 name="startTime"
                 value={formData.startTime}
                 onChange={handleChange}
                 placeholder="060000"
+                className="border-gray-200"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="endTime">End Time (HHMMSS)</Label>
+              <Label htmlFor="endTime" className="text-gray-600">End Time (HHMMSS)</Label>
               <Input
                 id="endTime"
                 name="endTime"
                 value={formData.endTime}
                 onChange={handleChange}
                 placeholder="190000"
+                className="border-gray-200"
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="motorRuntime">Motor Runtime (minutes)</Label>
+            <Label htmlFor="motorRuntime" className="text-gray-600">Motor Runtime (minutes)</Label>
             <Input
               id="motorRuntime"
               name="motorRuntime"
@@ -137,11 +142,12 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
               value={formData.motorRuntime}
               onChange={handleChange}
               min="1"
+              className="border-gray-200"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="irrigationInterval">Irrigation Interval (minutes)</Label>
+            <Label htmlFor="irrigationInterval" className="text-gray-600">Irrigation Interval (minutes)</Label>
             <Input
               id="irrigationInterval"
               name="irrigationInterval"
@@ -149,10 +155,14 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
               value={formData.irrigationInterval}
               onChange={handleChange}
               min="1"
+              className="border-gray-200"
             />
           </div>
           
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+          <Button 
+            type="submit" 
+            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white"
+          >
             Generate Schedule
           </Button>
         </form>

@@ -9,7 +9,7 @@ const Index = () => {
   const [schedule, setSchedule] = useState<IrrigationCycle[]>([]);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+    <div className="min-h-screen bg-[#4BB4F5]">
       <div className="container mx-auto px-4 py-8">
         <Header />
         

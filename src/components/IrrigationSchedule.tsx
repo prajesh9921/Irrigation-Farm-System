@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,8 @@ import { CheckIcon, FilterIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { updateScheduleStatus } from "@/utils/scheduleGenerator";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 interface IrrigationScheduleProps {
   schedule: IrrigationCycle[];
@@ -25,17 +28,20 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [plots, setPlots] = useState<string[]>([]);
   const [liveSchedule, setLiveSchedule] = useState<IrrigationCycle[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   // Update plots list when schedule changes
   useEffect(() => {
     if (schedule.length) {
+      console.log("Schedule updated:", schedule);
       const uniquePlots = Array.from(new Set(schedule.map((item) => item.plot)));
       setPlots(uniquePlots);
-    }
     
-    // Initialize with fresh schedule
-    const initialLiveSchedule = [...schedule];
-    setLiveSchedule(updateScheduleStatus(initialLiveSchedule));
+      // Initialize with fresh schedule
+      const initialLiveSchedule = [...schedule];
+      setLiveSchedule(updateScheduleStatus(initialLiveSchedule));
+    }
   }, [schedule]);
 
   // Real-time status updates
@@ -102,13 +108,13 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Done":
-        return <Badge className="bg-green-500">Done</Badge>;
+        return <Badge className="bg-green-500 hover:bg-green-600">Done</Badge>;
       case "In Progress":
-        return <Badge className="bg-blue-500">In Progress</Badge>;
+        return <Badge className="bg-blue-500 hover:bg-blue-600">In Progress</Badge>;
       case "Pending":
-        return <Badge className="bg-amber-500">Pending</Badge>;
+        return <Badge className="bg-amber-500 hover:bg-amber-600">Pending</Badge>;
       default:
-        return <Badge className="bg-gray-500">{status}</Badge>;
+        return <Badge className="bg-gray-500 hover:bg-gray-600">{status}</Badge>;
     }
   };
 
@@ -121,17 +127,23 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
     return `${hours}:${minutes}:${seconds}`;
   };
 
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredSchedule.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredSchedule.length / itemsPerPage);
+
   return (
-    <Card className="shadow-md">
-      <CardHeader>
+    <Card className="shadow-md bg-white rounded-xl">
+      <CardHeader className="border-b border-gray-100">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <CardTitle className="text-xl">Irrigation Schedule</CardTitle>
+          <CardTitle className="text-xl text-gray-700">Irrigation Schedule</CardTitle>
           <div className="text-sm text-gray-500 mt-2 md:mt-0">
             {filteredSchedule.length} of {liveSchedule.length} cycles
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         {liveSchedule.length > 0 ? (
           <>
             <div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -140,7 +152,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full"
+                  className="w-full border-gray-200"
                 />
               </div>
               <div className="flex gap-2">
@@ -148,7 +160,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
                   value={selectedPlot}
                   onValueChange={(value) => setSelectedPlot(value)}
                 >
-                  <SelectTrigger className="w-[120px]">
+                  <SelectTrigger className="w-[120px] border-gray-200">
                     <SelectValue placeholder="Plot" />
                   </SelectTrigger>
                   <SelectContent>
@@ -162,7 +174,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
                 </Select>
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-gray-200"
                   onClick={resetFilters}
                 >
                   <FilterIcon className="h-4 w-4" /> Reset
@@ -206,32 +218,73 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
               </div>
             </div>
             
-            <div className="relative overflow-x-auto rounded-md border">
-              <table className="w-full text-sm text-left">
-                <thead className="text-xs uppercase bg-gray-50">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">ID</th>
-                    <th scope="col" className="px-6 py-3">Plot</th>
-                    <th scope="col" className="px-6 py-3">Start Time</th>
-                    <th scope="col" className="px-6 py-3">End Time</th>
-                    <th scope="col" className="px-6 py-3">Motor</th>
-                    <th scope="col" className="px-6 py-3">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSchedule.map((cycle) => (
-                    <tr key={cycle.index} className="bg-white border-b">
-                      <td className="px-6 py-4">{cycle.index + 1}</td>
-                      <td className="px-6 py-4 font-medium">{cycle.plot}</td>
-                      <td className="px-6 py-4">{formatTime(cycle.startTime)}</td>
-                      <td className="px-6 py-4">{formatTime(cycle.endTime)}</td>
-                      <td className="px-6 py-4">{cycle.runBy}</td>
-                      <td className="px-6 py-4">{getStatusBadge(cycle.status)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="rounded-md border border-gray-200">
+              <Table>
+                <TableHeader className="bg-gray-50">
+                  <TableRow>
+                    <TableHead className="font-medium">ID</TableHead>
+                    <TableHead className="font-medium">Plot</TableHead>
+                    <TableHead className="font-medium">Start Time</TableHead>
+                    <TableHead className="font-medium">End Time</TableHead>
+                    <TableHead className="font-medium">Motor</TableHead>
+                    <TableHead className="font-medium">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentItems.length > 0 ? (
+                    currentItems.map((cycle) => (
+                      <TableRow key={cycle.index} className="hover:bg-gray-50">
+                        <TableCell>{cycle.index + 1}</TableCell>
+                        <TableCell className="font-medium">{cycle.plot}</TableCell>
+                        <TableCell>{formatTime(cycle.startTime)}</TableCell>
+                        <TableCell>{formatTime(cycle.endTime)}</TableCell>
+                        <TableCell>{cycle.runBy}</TableCell>
+                        <TableCell>{getStatusBadge(cycle.status)}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="h-24 text-center text-gray-500">
+                        No results found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
             </div>
+
+            {totalPages > 1 && (
+              <div className="mt-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink 
+                          onClick={() => setCurrentPage(i + 1)}
+                          isActive={currentPage === i + 1}
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center py-6">
