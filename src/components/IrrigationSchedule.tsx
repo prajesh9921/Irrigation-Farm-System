@@ -19,7 +19,7 @@ interface IrrigationScheduleProps {
 
 const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   const [filteredSchedule, setFilteredSchedule] = useState<IrrigationCycle[]>([]);
-  const [selectedPlot, setSelectedPlot] = useState<string>("");
+  const [selectedPlot, setSelectedPlot] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState({
     done: true,
     inProgress: true,
@@ -60,7 +60,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
     let result = [...liveSchedule];
     
     // Filter by plot
-    if (selectedPlot) {
+    if (selectedPlot && selectedPlot !== "all") {
       result = result.filter((item) => item.plot === selectedPlot);
     }
     
@@ -96,7 +96,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
 
   // Reset filters
   const resetFilters = () => {
-    setSelectedPlot("");
+    setSelectedPlot("all");
     setStatusFilter({
       done: true,
       inProgress: true,
@@ -164,7 +164,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
                     <SelectValue placeholder="Plot" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Plots</SelectItem>
+                    <SelectItem value="all">All Plots</SelectItem>
                     {plots.map((plot) => (
                       <SelectItem key={plot} value={plot}>
                         {plot}
