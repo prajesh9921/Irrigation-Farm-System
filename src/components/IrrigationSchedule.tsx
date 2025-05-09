@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -84,6 +83,9 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
     }
     
     setFilteredSchedule(result);
+    
+    // Reset to first page whenever filters change
+    setCurrentPage(1);
   }, [liveSchedule, selectedPlot, statusFilter, searchTerm]);
 
   // Handle status filter change
@@ -103,6 +105,7 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
       pending: true
     });
     setSearchTerm("");
+    setCurrentPage(1);
   };
 
   const getStatusBadge = (status: string) => {
