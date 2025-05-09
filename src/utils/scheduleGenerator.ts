@@ -1,4 +1,3 @@
-
 import { IrrigationCycle, IrrigationFormValues } from "@/types/irrigation";
 
 // Convert military time string to minutes since midnight
@@ -45,37 +44,34 @@ export const generateSchedule = (params: IrrigationFormValues): IrrigationCycle[
   let currentTime = startMinutes;
   let index = 0;
   let plotIndex = 0;
-  let motorIndex = 0;
-  
+
   // Keep scheduling until we reach the end time
   while (currentTime + motorRuntime <= endMinutes) {
-    // Schedule for each available motor
+    // Schedule for motors running in parallel
+    const batchStartTime = currentTime;
+    
     for (let m = 0; m < motorsInParallel; m++) {
-      if (currentTime + motorRuntime > endMinutes) break;
+      if (plotIndex >= numberOfPlots || batchStartTime + motorRuntime > endMinutes) break;
       
       const plotName = plotNames[plotIndex];
-      const motorName = motorNames[motorIndex];
-      
-      const cycleStartTime = currentTime;
-      const cycleEndTime = currentTime + motorRuntime;
+      const motorName = motorNames[m];
       
       schedule.push({
         index,
         plot: plotName,
-        startTime: minutesToTime(cycleStartTime),
-        endTime: minutesToTime(cycleEndTime),
+        startTime: minutesToTime(batchStartTime),
+        endTime: minutesToTime(batchStartTime + motorRuntime),
         runBy: motorName,
-        status: "Pending" // Will be updated by updateScheduleStatus
+        status: "Pending"
       });
       
-      // Move to next plot and motor
-      plotIndex = (plotIndex + 1) % numberOfPlots;
-      motorIndex = (motorIndex + 1) % motorsInParallel;
+      // Move to next plot
+      plotIndex++;
       index++;
     }
     
-    // Advance time by irrigation interval
-    currentTime += irrigationInterval;
+    // Advance time by irrigation interval AFTER all parallel motors have run
+    currentTime = batchStartTime + irrigationInterval;
   }
   
   return updateScheduleStatus(schedule);
@@ -125,4 +121,3 @@ export const updateScheduleStatus = (schedule: IrrigationCycle[]): IrrigationCyc
     return { ...cycle, status };
   });
 };
-
