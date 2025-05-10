@@ -21,4 +21,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
+// Add buttonVariants for compatibility with existing code
+export const buttonVariants = ({
+  variant = "contained",
+  size = "medium",
+}: {
+  variant?: "text" | "contained" | "outlined";
+  size?: "small" | "medium" | "large";
+} = {}) => {
+  return { variant, size };
+};
+
 export { Button };

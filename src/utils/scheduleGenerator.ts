@@ -1,3 +1,4 @@
+
 import { IrrigationCycle, IrrigationFormValues } from "@/types/irrigation";
 
 // Convert military time string to minutes since midnight
@@ -71,6 +72,7 @@ export const generateSchedule = (params: IrrigationFormValues): IrrigationCycle[
 
   return updateScheduleStatus(schedule);
 };
+
 
 // Update the status of each irrigation cycle based on current time
 export const updateScheduleStatus = (schedule: IrrigationCycle[]): IrrigationCycle[] => {
