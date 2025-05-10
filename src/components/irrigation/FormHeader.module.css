@@ -1,0 +1,10 @@
+
+.formHeader {
+  border-bottom: 1px solid #f3f4f6;
+  padding: 1rem 1.5rem;
+}
+
+.formTitle {
+  font-size: 1.25rem;
+  color: #374151;
+}
