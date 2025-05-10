@@ -1,0 +1,41 @@
+
+.formContainer {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.formHeader {
+  border-bottom: 1px solid #f3f4f6;
+  padding: 1rem 1.5rem;
+}
+
+.formTitle {
+  font-size: 1.25rem;
+  color: #374151;
+}
+
+.formContent {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.inputGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 1rem;
+}

@@ -1,17 +1,28 @@
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import {
+  Paper,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  MenuItem,
+  Select,
+  Chip,
+  Pagination
+} from "@mui/material";
 import { IrrigationCycle } from "@/types/irrigation";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckIcon, FilterIcon } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { updateScheduleStatus } from "@/utils/scheduleGenerator";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import styles from "./IrrigationSchedule.module.css";
 
 interface IrrigationScheduleProps {
   schedule: IrrigationCycle[];
@@ -79,10 +90,6 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
         // (we're simulating completion after a few seconds)
         if (inProgressIndex !== -1 && processingIndex === inProgressIndex) {
           // Simulate random completion time between 5-15 seconds
-          const now = new Date().getTime();
-          const cycleStartTime = parseInt(prev[inProgressIndex].startTime);
-          const cycleCompletionTime = 5000 + Math.random() * 10000; // 5-15 seconds in ms
-          
           if (processingIndex !== -1 && Math.random() > 0.7) {
             const updated = [...prev];
             updated[inProgressIndex].status = "Done";
@@ -153,16 +160,16 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
     setCurrentPage(1);
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusChip = (status: string) => {
     switch (status) {
       case "Done":
-        return <Badge className="bg-green-500 hover:bg-green-600">Done</Badge>;
+        return <Chip label="Done" color="success" size="small" />;
       case "In Progress":
-        return <Badge className="bg-blue-500 hover:bg-blue-600">In Progress</Badge>;
+        return <Chip label="In Progress" color="primary" size="small" />;
       case "Pending":
-        return <Badge className="bg-amber-500 hover:bg-amber-600">Pending</Badge>;
+        return <Chip label="Pending" color="warning" size="small" />;
       default:
-        return <Badge className="bg-gray-500 hover:bg-gray-600">{status}</Badge>;
+        return <Chip label={status} color="default" size="small" />;
     }
   };
 
@@ -182,166 +189,155 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   const totalPages = Math.ceil(filteredSchedule.length / itemsPerPage);
 
   return (
-    <Card className="shadow-md bg-white rounded-xl">
-      <CardHeader className="border-b border-gray-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <CardTitle className="text-xl text-gray-700">Irrigation Schedule</CardTitle>
-          <div className="text-sm text-gray-500 mt-2 md:mt-0">
-            {filteredSchedule.length} of {liveSchedule.length} cycles
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
+    <Paper className={styles.scheduleContainer}>
+      <Box className={styles.scheduleHeader}>
+        <Typography variant="h6" className={styles.scheduleTitle}>
+          Irrigation Schedule
+        </Typography>
+        <Typography variant="body2" className={styles.scheduleCount}>
+          {filteredSchedule.length} of {liveSchedule.length} cycles
+        </Typography>
+      </Box>
+      <Box className={styles.scheduleContent}>
         {liveSchedule.length > 0 ? (
           <>
-            <div className="flex flex-col md:flex-row gap-4 mb-4">
-              <div className="flex-1">
-                <Input
+            <Box className={styles.filterContainer}>
+              <Box className={styles.searchContainer}>
+                <TextField
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full border-gray-200"
+                  fullWidth
+                  size="small"
                 />
-              </div>
-              <div className="flex gap-2">
+              </Box>
+              <Box className={styles.filterActions}>
                 <Select
                   value={selectedPlot}
-                  onValueChange={(value) => setSelectedPlot(value)}
+                  onChange={(e) => setSelectedPlot(e.target.value as string)}
+                  size="small"
+                  displayEmpty
                 >
-                  <SelectTrigger className="w-[120px] border-gray-200">
-                    <SelectValue placeholder="Plot" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Plots</SelectItem>
-                    {plots.map((plot) => (
-                      <SelectItem key={plot} value={plot}>
-                        {plot}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+                  <MenuItem value="all">All Plots</MenuItem>
+                  {plots.map((plot) => (
+                    <MenuItem key={plot} value={plot}>
+                      {plot}
+                    </MenuItem>
+                  ))}
                 </Select>
                 <Button
-                  variant="outline"
-                  className="flex items-center gap-2 border-gray-200"
+                  variant="outlined"
+                  startIcon={<FilterAltIcon />}
                   onClick={resetFilters}
+                  size="small"
                 >
-                  <FilterIcon className="h-4 w-4" /> Reset
+                  Reset
                 </Button>
-              </div>
-            </div>
+              </Box>
+            </Box>
             
-            <div className="flex flex-wrap gap-4 mb-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="done"
-                  checked={statusFilter.done}
-                  onCheckedChange={() => handleStatusFilterChange("done")}
-                />
-                <Label htmlFor="done" className="flex items-center">
-                  <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                  Done
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="inProgress"
-                  checked={statusFilter.inProgress}
-                  onCheckedChange={() => handleStatusFilterChange("inProgress")}
-                />
-                <Label htmlFor="inProgress" className="flex items-center">
-                  <div className="h-2 w-2 rounded-full bg-blue-500 mr-2"></div>
-                  In Progress
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="pending"
-                  checked={statusFilter.pending}
-                  onCheckedChange={() => handleStatusFilterChange("pending")}
-                />
-                <Label htmlFor="pending" className="flex items-center">
-                  <div className="h-2 w-2 rounded-full bg-amber-500 mr-2"></div>
-                  Pending
-                </Label>
-              </div>
-            </div>
+            <Box className={styles.statusFilterContainer}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={statusFilter.done}
+                    onChange={() => handleStatusFilterChange("done")}
+                  />
+                }
+                label={
+                  <Box display="flex" alignItems="center">
+                    <Box className={`${styles.statusDot} ${styles.dotDone}`} />
+                    <span>Done</span>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={statusFilter.inProgress}
+                    onChange={() => handleStatusFilterChange("inProgress")}
+                  />
+                }
+                label={
+                  <Box display="flex" alignItems="center">
+                    <Box className={`${styles.statusDot} ${styles.dotInProgress}`} />
+                    <span>In Progress</span>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={statusFilter.pending}
+                    onChange={() => handleStatusFilterChange("pending")}
+                  />
+                }
+                label={
+                  <Box display="flex" alignItems="center">
+                    <Box className={`${styles.statusDot} ${styles.dotPending}`} />
+                    <span>Pending</span>
+                  </Box>
+                }
+              />
+            </Box>
             
-            <div className="rounded-md border border-gray-200">
-              <Table>
-                <TableHeader className="bg-gray-50">
+            <TableContainer>
+              <Table className={styles.table}>
+                <TableHead className={styles.tableHead}>
                   <TableRow>
-                    <TableHead className="font-medium">ID</TableHead>
-                    <TableHead className="font-medium">Plot</TableHead>
-                    <TableHead className="font-medium">Start Time</TableHead>
-                    <TableHead className="font-medium">End Time</TableHead>
-                    <TableHead className="font-medium">Motor</TableHead>
-                    <TableHead className="font-medium">Status</TableHead>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Plot</TableCell>
+                    <TableCell>Start Time</TableCell>
+                    <TableCell>End Time</TableCell>
+                    <TableCell>Motor</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
-                </TableHeader>
+                </TableHead>
                 <TableBody>
                   {currentItems.length > 0 ? (
                     currentItems.map((cycle) => (
-                      <TableRow key={cycle.index} className="hover:bg-gray-50">
+                      <TableRow key={cycle.index} className={styles.tableRow}>
                         <TableCell>{cycle.index + 1}</TableCell>
-                        <TableCell className="font-medium">{cycle.plot}</TableCell>
+                        <TableCell>{cycle.plot}</TableCell>
                         <TableCell>{formatTime(cycle.startTime)}</TableCell>
                         <TableCell>{formatTime(cycle.endTime)}</TableCell>
                         <TableCell>{cycle.runBy}</TableCell>
-                        <TableCell>{getStatusBadge(cycle.status)}</TableCell>
+                        <TableCell>{getStatusChip(cycle.status)}</TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center text-gray-500">
+                      <TableCell colSpan={6} align="center" className={styles.emptyMessage}>
                         No results found
                       </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
               </Table>
-            </div>
+            </TableContainer>
 
             {totalPages > 1 && (
-              <div className="mt-4">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                      />
-                    </PaginationItem>
-                    
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink 
-                          onClick={() => setCurrentPage(i + 1)}
-                          isActive={currentPage === i + 1}
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    
-                    <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
+              <Box className={styles.pagination}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={(_, page) => setCurrentPage(page)}
+                />
+              </Box>
             )}
           </>
         ) : (
-          <div className="text-center py-6">
-            <p className="text-gray-500">No irrigation schedule generated yet.</p>
-            <p className="text-sm mt-2">Configure parameters and click Generate Schedule.</p>
-          </div>
+          <Box className={styles.emptyMessage}>
+            <Typography variant="body1" color="textSecondary">
+              No irrigation schedule generated yet.
+            </Typography>
+            <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+              Configure parameters and click Generate Schedule.
+            </Typography>
+          </Box>
         )}
-      </CardContent>
-    </Card>
+      </Box>
+    </Paper>
   );
 };
 

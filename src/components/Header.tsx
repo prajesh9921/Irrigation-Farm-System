@@ -1,16 +1,23 @@
 
-import { DropletIcon } from "lucide-react";
+import React from "react";
+import { Typography, Box } from "@mui/material";
+import OpacityIcon from '@mui/icons-material/Opacity';
+import styles from "./Header.module.css";
 
 const Header = () => {
   return (
-    <header className="py-6">
-      <div className="flex items-center justify-center md:justify-start">
-        <DropletIcon className="h-8 w-8 text-blue-500 mr-3" />
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Farm Irrigation Scheduler</h1>
-          <p className="text-gray-600">Configure and monitor your IoT irrigation system</p>
-        </div>
-      </div>
+    <header className={styles.header}>
+      <Box className={styles.container}>
+        <OpacityIcon className={styles.icon} fontSize="large" />
+        <Box>
+          <Typography variant="h1" className={styles.title}>
+            Farm Irrigation Scheduler
+          </Typography>
+          <Typography variant="body1" className={styles.subtitle}>
+            Configure and monitor your IoT irrigation system
+          </Typography>
+        </Box>
+      </Box>
     </header>
   );
 };

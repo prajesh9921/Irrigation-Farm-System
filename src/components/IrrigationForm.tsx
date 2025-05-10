@@ -1,12 +1,18 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import {
+  Paper,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel
+} from "@mui/material";
 import { generateSchedule } from "@/utils/scheduleGenerator";
 import { IrrigationCycle } from "@/types/irrigation";
 import { toast } from "sonner";
+import styles from "./IrrigationForm.module.css";
 
 interface IrrigationFormProps {
   setSchedule: React.Dispatch<React.SetStateAction<IrrigationCycle[]>>;
@@ -75,99 +81,121 @@ const IrrigationForm = ({ setSchedule }: IrrigationFormProps) => {
   };
 
   return (
-    <Card className="shadow-md bg-white rounded-xl">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="text-xl text-gray-700">Irrigation Configuration</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="numberOfPlots" className="text-gray-600">Number of Plots</Label>
-            <Input
+    <Paper className={styles.formContainer}>
+      <Box className={styles.formHeader}>
+        <Typography variant="h6" className={styles.formTitle}>
+          Irrigation Configuration
+        </Typography>
+      </Box>
+      <Box className={styles.formContent}>
+        <form onSubmit={handleSubmit}>
+          <Box className={styles.formGroup}>
+            <InputLabel htmlFor="numberOfPlots" className={styles.formLabel}>
+              Number of Plots
+            </InputLabel>
+            <TextField
               id="numberOfPlots"
               name="numberOfPlots"
               type="number"
               value={formData.numberOfPlots}
               onChange={handleChange}
-              min="1"
-              className="border-gray-200"
+              fullWidth
+              size="small"
+              inputProps={{ min: "1" }}
             />
-          </div>
+          </Box>
           
-          <div className="space-y-2">
-            <Label htmlFor="motorsInParallel" className="text-gray-600">Motors in Parallel</Label>
-            <Input
+          <Box className={styles.formGroup}>
+            <InputLabel htmlFor="motorsInParallel" className={styles.formLabel}>
+              Motors in Parallel
+            </InputLabel>
+            <TextField
               id="motorsInParallel"
               name="motorsInParallel"
               type="number"
               value={formData.motorsInParallel}
               onChange={handleChange}
-              min="1"
-              className="border-gray-200"
+              fullWidth
+              size="small"
+              inputProps={{ min: "1" }}
             />
-          </div>
+          </Box>
           
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="startTime" className="text-gray-600">Start Time (HHMMSS)</Label>
-              <Input
+          <Box className={styles.inputGroup}>
+            <Box className={styles.formGroup}>
+              <InputLabel htmlFor="startTime" className={styles.formLabel}>
+                Start Time (HHMMSS)
+              </InputLabel>
+              <TextField
                 id="startTime"
                 name="startTime"
                 value={formData.startTime}
                 onChange={handleChange}
                 placeholder="060000"
-                className="border-gray-200"
+                fullWidth
+                size="small"
               />
-            </div>
+            </Box>
             
-            <div className="space-y-2">
-              <Label htmlFor="endTime" className="text-gray-600">End Time (HHMMSS)</Label>
-              <Input
+            <Box className={styles.formGroup}>
+              <InputLabel htmlFor="endTime" className={styles.formLabel}>
+                End Time (HHMMSS)
+              </InputLabel>
+              <TextField
                 id="endTime"
                 name="endTime"
                 value={formData.endTime}
                 onChange={handleChange}
                 placeholder="190000"
-                className="border-gray-200"
+                fullWidth
+                size="small"
               />
-            </div>
-          </div>
+            </Box>
+          </Box>
           
-          <div className="space-y-2">
-            <Label htmlFor="motorRuntime" className="text-gray-600">Motor Runtime (minutes)</Label>
-            <Input
+          <Box className={styles.formGroup}>
+            <InputLabel htmlFor="motorRuntime" className={styles.formLabel}>
+              Motor Runtime (minutes)
+            </InputLabel>
+            <TextField
               id="motorRuntime"
               name="motorRuntime"
               type="number"
               value={formData.motorRuntime}
               onChange={handleChange}
-              min="1"
-              className="border-gray-200"
+              fullWidth
+              size="small"
+              inputProps={{ min: "1" }}
             />
-          </div>
+          </Box>
           
-          <div className="space-y-2">
-            <Label htmlFor="irrigationInterval" className="text-gray-600">Irrigation Interval (minutes)</Label>
-            <Input
+          <Box className={styles.formGroup}>
+            <InputLabel htmlFor="irrigationInterval" className={styles.formLabel}>
+              Irrigation Interval (minutes)
+            </InputLabel>
+            <TextField
               id="irrigationInterval"
               name="irrigationInterval"
               type="number"
               value={formData.irrigationInterval}
               onChange={handleChange}
-              min="1"
-              className="border-gray-200"
+              fullWidth
+              size="small"
+              inputProps={{ min: "1" }}
             />
-          </div>
+          </Box>
           
           <Button 
             type="submit" 
-            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white"
+            variant="contained" 
+            color="primary"
+            className={styles.submitButton}
           >
             Generate Schedule
           </Button>
         </form>
-      </CardContent>
-    </Card>
+      </Box>
+    </Paper>
   );
 };
 

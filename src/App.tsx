@@ -1,12 +1,41 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { useState } from "react";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
+// Create Material UI theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#3B82F6",
+    },
+    secondary: {
+      main: "#6366F1",
+    },
+    background: {
+      default: "#f9fafb",
+    },
+  },
+  typography: {
+    fontFamily: [
+      "Roboto",
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Arial",
+      "sans-serif",
+    ].join(","),
+  },
+});
 
 const App = () => {
   // Create a new QueryClient instance inside the component to ensure
@@ -15,9 +44,9 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -25,7 +54,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
