@@ -1,33 +1,26 @@
 
 .header {
   padding: 1.5rem 0;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+}
+
+.dropimg {
+  object-fit: cover;
+  height: 30px;
+  width: 30px
 }
 
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #1A1A1A;
+  color: #fff;
   margin: 0;
-}
-
-.subtitle {
-  color: #666;
-  margin: 0.25rem 0 0 0;
-}
-
-.icon {
-  margin-right: 0.75rem;
-  color: #3B82F6;
-}
-
-@media (min-width: 768px) {
-  .container {
-    justify-content: flex-start;
-  }
 }

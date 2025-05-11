@@ -1,5 +1,3 @@
-
-import { Box, Typography } from "@mui/material";
 import styles from "./ScheduleHeader.module.css";
 
 interface ScheduleHeaderProps {
@@ -9,14 +7,12 @@ interface ScheduleHeaderProps {
 
 const ScheduleHeader = ({ totalCount, filteredCount }: ScheduleHeaderProps) => {
   return (
-    <Box className={styles.scheduleHeader}>
-      <Typography variant="h6" className={styles.scheduleTitle}>
-        Irrigation Schedule
-      </Typography>
-      <Typography variant="body2" className={styles.scheduleCount}>
+    <div className={styles.scheduleHeader}>
+      <p className={styles.scheduleTitle}>Irrigation Schedule</p>
+      <p className={styles.scheduleCount}>
         {filteredCount} of {totalCount} cycles
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 };
 

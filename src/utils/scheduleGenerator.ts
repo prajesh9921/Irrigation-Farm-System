@@ -1,6 +1,6 @@
 import { IrrigationCycle, IrrigationFormValues } from "@/types/irrigation";
 
-// Convert military time string to minutes since midnight
+// Convert military time to minute
 export const timeToMinutes = (timeString: string): number => {
   const hours = parseInt(timeString.substring(0, 2));
   const minutes = parseInt(timeString.substring(2, 4));
@@ -9,7 +9,7 @@ export const timeToMinutes = (timeString: string): number => {
   return hours * 60 + minutes + seconds / 60;
 };
 
-// Convert minutes since midnight to military time string (HHMMSS)
+// Convert minutes to military time string (HHMMSS)
 export const minutesToTime = (minutes: number): string => {
   const totalMinutes = Math.floor(minutes);
   const hours = Math.floor(totalMinutes / 60);
@@ -44,9 +44,9 @@ export const generateSchedule = (params: IrrigationFormValues): IrrigationCycle[
   while (currentTime + motorRuntime <= endMinutes) {
     const plotsRemaining = [...plotNames];
 
-    // One full cycle (each plot irrigated once)
+    // One full cycle
     while (plotsRemaining.length > 0 && currentTime + motorRuntime <= endMinutes) {
-      // One batch = as many motors as possible
+      // One batch means as many motors as possible
       const batchSize = Math.min(motorsInParallel, plotsRemaining.length);
       const batch = plotsRemaining.splice(0, batchSize);
 
@@ -64,7 +64,7 @@ export const generateSchedule = (params: IrrigationFormValues): IrrigationCycle[
       currentTime += motorRuntime;
     }
 
-    // After each full cycle, wait for irrigation interval
+    // After each full cycle wait for irrigation interval
     currentTime += irrigationInterval;
   }
 

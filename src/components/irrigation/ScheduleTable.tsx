@@ -1,4 +1,3 @@
-
 import { 
   Table, 
   TableBody, 
@@ -6,8 +5,6 @@ import {
   TableContainer, 
   TableHead, 
   TableRow, 
-  Typography, 
-  Box 
 } from "@mui/material";
 import { IrrigationCycle } from "@/types/irrigation";
 import StatusChip from "./StatusChip";
@@ -29,13 +26,12 @@ const ScheduleTable = ({ cycles }: ScheduleTableProps) => {
 
   if (cycles.length === 0) {
     return (
-      <Box className={styles.emptyMessage}>
-        <Typography variant="body1" color="textSecondary">
-          No results found
-        </Typography>
-      </Box>
+      <div className={styles.emptyMessage}>
+        <p className={styles.emptyText}>No results found</p>
+      </div>
     );
   }
+  
 
   return (
     <TableContainer>

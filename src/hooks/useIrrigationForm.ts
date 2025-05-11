@@ -19,12 +19,12 @@ interface FormData {
 
 export const useIrrigationForm = ({ setSchedule }: UseIrrigationFormProps) => {
   const [formData, setFormData] = useState<FormData>({
-    numberOfPlots: 4,
-    motorsInParallel: 2,
-    startTime: "060000",
-    endTime: "190000",
-    motorRuntime: 5,
-    irrigationInterval: 20
+    numberOfPlots: 0,
+    motorsInParallel: 0,
+    startTime: "",
+    endTime: "",
+    motorRuntime: 0,
+    irrigationInterval: 0
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,27 +39,27 @@ export const useIrrigationForm = ({ setSchedule }: UseIrrigationFormProps) => {
   };
 
   const validateForm = (): boolean => {
-    if (formData.numberOfPlots < 1) {
+    if (formData.numberOfPlots < 1 || !formData.numberOfPlots) {
       toast.error("Number of plots must be at least 1");
       return false;
     }
       
-    if (formData.motorsInParallel < 1) {
+    if (formData.motorsInParallel < 1 || !formData.motorsInParallel) {
       toast.error("Motors in parallel must be at least 1");
       return false;
     }
       
-    if (parseInt(formData.startTime) >= parseInt(formData.endTime)) {
-      toast.error("End time must be after start time");
+    if (parseInt(formData.startTime) >= parseInt(formData.endTime) || !formData.startTime || !formData.endTime) {
+      toast.error("Start and end time required. End time must be after start time");
       return false;
     }
       
-    if (formData.motorRuntime < 1) {
+    if (formData.motorRuntime < 1 || !formData.motorRuntime) {
       toast.error("Motor runtime must be at least 1 minute");
       return false;
     }
       
-    if (formData.irrigationInterval < formData.motorRuntime) {
+    if (formData.irrigationInterval < formData.motorRuntime || !formData.irrigationInterval) {
       toast.error("Irrigation interval must be at least equal to motor runtime");
       return false;
     }

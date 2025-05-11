@@ -1,7 +1,7 @@
 
 .container {
   min-height: 100vh;
-  background-color: #4BB4F5;
+  background-color: #51befb;
 }
 
 .content {
@@ -11,10 +11,17 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: 1.5rem;
   margin-top: 2rem;
+}
+
+.form {
+  flex: 1;
+}
+
+.schedule {
+  flex: 2;
 }
 
 @media (min-width: 1024px) {

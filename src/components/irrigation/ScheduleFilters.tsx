@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { TextField, Box, Select, MenuItem, Button, FormControlLabel, Checkbox } from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import styles from "./ScheduleFilters.module.css";
@@ -41,8 +40,8 @@ const ScheduleFilters = ({
   
   return (
     <>
-      <Box className={styles.filterContainer}>
-        <Box className={styles.searchContainer}>
+      <div className={styles.filterContainer}>
+        <div className={styles.searchContainer}>
           <TextField
             placeholder="Search..."
             value={searchTerm}
@@ -50,8 +49,8 @@ const ScheduleFilters = ({
             fullWidth
             size="small"
           />
-        </Box>
-        <Box className={styles.filterActions}>
+        </div>
+        <div className={styles.filterActions}>
           <Select
             value={selectedPlot}
             onChange={(e) => setSelectedPlot(e.target.value as string)}
@@ -73,10 +72,10 @@ const ScheduleFilters = ({
           >
             Reset
           </Button>
-        </Box>
-      </Box>
+        </div>
+      </div>
       
-      <Box className={styles.statusFilterContainer}>
+      <div className={styles.statusFilterContainer}>
         <FormControlLabel
           control={
             <Checkbox
@@ -87,7 +86,7 @@ const ScheduleFilters = ({
           label={
             <Box display="flex" alignItems="center">
               <Box className={`${styles.statusDot} ${styles.dotDone}`} />
-              <span>Done</span>
+              <span className={styles.text}>Done</span>
             </Box>
           }
         />
@@ -101,7 +100,7 @@ const ScheduleFilters = ({
           label={
             <Box display="flex" alignItems="center">
               <Box className={`${styles.statusDot} ${styles.dotInProgress}`} />
-              <span>In Progress</span>
+              <span className={styles.text}>In Progress</span>
             </Box>
           }
         />
@@ -115,11 +114,11 @@ const ScheduleFilters = ({
           label={
             <Box display="flex" alignItems="center">
               <Box className={`${styles.statusDot} ${styles.dotPending}`} />
-              <span>Pending</span>
+              <span className={styles.text}>Pending</span>
             </Box>
           }
         />
-      </Box>
+      </div>
     </>
   );
 };

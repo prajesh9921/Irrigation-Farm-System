@@ -1,6 +1,16 @@
 
 .emptyMessage {
   text-align: center;
+  color: #666;
   padding: 1.5rem 0;
-  color: #6b7280;
+}
+
+.primaryText {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.secondaryText {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }

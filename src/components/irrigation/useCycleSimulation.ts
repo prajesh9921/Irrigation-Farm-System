@@ -7,7 +7,7 @@ const useCycleSimulation = (schedule: IrrigationCycle[]) => {
   const [lastCompletedIndex, setLastCompletedIndex] = useState(-1);
   const [processingIndex, setProcessingIndex] = useState(-1);
 
-  // Initialize simulation when schedule changes
+  // Initialize when schedule changes
   useEffect(() => {
     if (schedule.length) {
       console.log("Schedule updated:", schedule);
@@ -21,16 +21,16 @@ const useCycleSimulation = (schedule: IrrigationCycle[]) => {
     }
   }, [schedule]);
 
-  // Real-time status updates with proper sequencing
+  // Real-time status updates
   useEffect(() => {
     if (!schedule.length) return;
     
     const intervalId = setInterval(() => {
       setLiveSchedule(prev => {
-        // Find the current in-progress cycle if any
+        // Find the current in progress cycle if any
         const inProgressIndex = prev.findIndex(cycle => cycle.status === "In Progress");
         
-        // If no cycle is in progress, start the next pending one
+        // If no cycle is in progress start the next pending one
         if (inProgressIndex === -1) {
           const nextPendingIndex = prev.findIndex(
             (cycle, idx) => cycle.status === "Pending" && idx > lastCompletedIndex
@@ -45,10 +45,8 @@ const useCycleSimulation = (schedule: IrrigationCycle[]) => {
           return prev;
         } 
         
-        // Check if current in-progress cycle should be marked as done
-        // (we're simulating completion after a few seconds)
+        // Check if current in progress cycle should be marked as done
         if (inProgressIndex !== -1 && processingIndex === inProgressIndex) {
-          // Simulate random completion time between 5-15 seconds
           if (processingIndex !== -1 && Math.random() > 0.7) {
             const updated = [...prev];
             updated[inProgressIndex].status = "Done";

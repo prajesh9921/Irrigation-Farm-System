@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Box } from "@mui/material";
 import TimeField from "./TimeField";
 import styles from "./FormField.module.css";
 
@@ -16,7 +15,7 @@ const TimeFieldGroup = ({
   handleChange
 }: TimeFieldGroupProps) => {
   return (
-    <Box className={styles.inputGroup}>
+    <div className={styles.inputGroup}>
       <TimeField
         id="startTime"
         name="startTime"
@@ -34,7 +33,7 @@ const TimeFieldGroup = ({
         onChange={handleChange}
         placeholder="190000"
       />
-    </Box>
+    </div>
   );
 };
 

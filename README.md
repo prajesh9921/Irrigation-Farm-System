@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# Farm Irrigation System
 
-## Project info
+The **Farm Irrigation System** is an irrigation scheduling system designed to manage and monitor irrigation cycles for different plots. It provides features like filtering, pagination, and real-time status updates.
 
-**URL**: https://lovable.dev/projects/74057a72-64c7-41c1-9034-f7fc20e074d8
+---
 
-## How can I edit this code?
+### Deployed Link
 
-There are several ways of editing your application.
+Live link: www.test.com
 
-**Use Lovable**
+## Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/74057a72-64c7-41c1-9034-f7fc20e074d8) and start prompting.
+Follow these steps to run the application locally:
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd farm-flow-scheduler
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. Install Dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+3. Start the development server:
+   ```bash
+   npm start
+   # or
+   yarn start
 
-Follow these steps:
+### File Structure
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/
+│   ├── Header.tsx
+|   ├── IrrigationForm.tsx
+|   ├── IrrigationSchedule.tsx
+│   ├── irrigation/
+│   │   ├── ScheduleHeader.tsx
+│   │   ├── ScheduleFilters.tsx
+│   │   ├── ScheduleTable.tsx
+│   │   ├── EmptySchedule.tsx
+│   │   ├── useCycleSimulation.ts
+│   │   ├── useScheduleFiltering.ts
+│   │   ├── formContent.tsx
+│   │   ├── formField.tsx
+│   │   ├── formHeader.tsx
+│   │   ├── statusChip.tsx
+│   │   ├── SubmitButton.tsx
+│   │   ├── TimeField.tsx
+│   │   ├── TimeFieldGroup.tsx
+├── types/
+│   └── irrigation.ts
+├── hooks/
+│   └── useIrrigationForm.ts
+├── pages/
+    └── Index.tsx
+    └── NotFound.tsx
 ```
 
-**Edit a file directly in GitHub**
+### Key Files and Their Purpose
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```IrrigationSchedule.tsx```
+The main component that manages and displays the irrigation schedule. Combines filtering, pagination, and real-time status updates.
 
-**Use GitHub Codespaces**
+```irrigation/ScheduleHeader.tsx```
+Displays the total number of irrigation cycles and the count of filtered cycles
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```irrigation/ScheduleFilters.tsx```
+Provides filtering options for plots, status, and search terms
 
-## What technologies are used for this project?
+```irrigation/ScheduleTable.tsx```
+Displays the irrigation cycles in a tabular format.
 
-This project is built with:
+```irrigation/EmptySchedule.tsx```
+Displays a message when no irrigation cycles are available.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```irrigation/useCycleSimulation.ts```
+A custom hook that simulates real-time updates to the status of irrigation cycles.
 
-## How can I deploy this project?
+```irrigation/useScheduleFiltering.ts```
+A custom hook that handles filtering, searching, and pagination logic.
 
-Simply open [Lovable](https://lovable.dev/projects/74057a72-64c7-41c1-9034-f7fc20e074d8) and click on Share -> Publish.
+```pages/index.tsx```
+Contains the staring code of the application
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```app.tsx```
+Contains all the routing related code.

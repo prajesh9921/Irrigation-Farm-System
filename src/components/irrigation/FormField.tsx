@@ -27,7 +27,7 @@ const FormField = ({
   className,
 }: FormFieldProps) => {
   return (
-    <Box className={`${styles.formGroup} ${className}`}>
+    <div className={`${styles.formGroup} ${className}`}>
       <InputLabel htmlFor={id} className={styles.formLabel}>
         {label}
       </InputLabel>
@@ -42,7 +42,7 @@ const FormField = ({
         size="small"
         inputProps={{ min }}
       />
-    </Box>
+    </div>
   );
 };
 

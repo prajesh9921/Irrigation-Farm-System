@@ -1,17 +1,15 @@
-
-import { Box, Typography } from "@mui/material";
 import styles from "./EmptySchedule.module.css";
 
 const EmptySchedule = () => {
   return (
-    <Box className={styles.emptyMessage}>
-      <Typography variant="body1" color="textSecondary">
+    <div className={styles.emptyMessage}>
+      <p className={styles.primaryText}>
         No irrigation schedule generated yet.
-      </Typography>
-      <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+      </p>
+      <p className={styles.secondaryText}>
         Configure parameters and click Generate Schedule.
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 };
 

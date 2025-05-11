@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Box } from "@mui/material";
 import FormField from "./FormField";
 import TimeFieldGroup from "./TimeFieldGroup";
 import SubmitButton from "./SubmitButton";
@@ -16,7 +15,7 @@ const FormContent = ({ setSchedule }: FormContentProps) => {
   const { formData, handleChange, handleSubmit } = useIrrigationForm({ setSchedule });
 
   return (
-    <Box className={styles.formContent}>
+    <div className={styles.formContent}>
       <form onSubmit={handleSubmit}>
         <FormField
           id="numberOfPlots"
@@ -66,7 +65,7 @@ const FormContent = ({ setSchedule }: FormContentProps) => {
         
         <SubmitButton label="Generate Schedule" />
       </form>
-    </Box>
+    </div>
   );
 };
 

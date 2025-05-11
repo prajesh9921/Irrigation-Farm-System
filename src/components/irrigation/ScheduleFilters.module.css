@@ -38,6 +38,10 @@
   background-color: #22c55e;
 }
 
+.text {
+  color: #000;
+}
+
 .dotInProgress {
   background-color: #3b82f6;
 }
@@ -46,9 +50,8 @@
   background-color: #f59e0b;
 }
 
-@media (min-width: 768px) {
-  .filterContainer {
-    flex-direction: row;
-    align-items: center;
-  }
+.statusLabelContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

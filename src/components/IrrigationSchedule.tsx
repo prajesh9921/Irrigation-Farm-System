@@ -1,5 +1,5 @@
 
-import { Paper, Box, Pagination } from "@mui/material";
+import { Pagination } from "@mui/material";
 import { IrrigationCycle } from "@/types/irrigation";
 import ScheduleHeader from "./irrigation/ScheduleHeader";
 import ScheduleFilters from "./irrigation/ScheduleFilters";
@@ -33,13 +33,13 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
   } = useScheduleFiltering(liveSchedule);
 
   return (
-    <Paper className={styles.scheduleContainer}>
+    <div className={styles.scheduleContainer}>
       <ScheduleHeader 
         totalCount={liveSchedule.length} 
         filteredCount={filteredSchedule.length} 
       />
       
-      <Box className={styles.scheduleContent}>
+      <div className={styles.scheduleContent}>
         {liveSchedule.length > 0 ? (
           <>
             <ScheduleFilters
@@ -56,20 +56,20 @@ const IrrigationSchedule = ({ schedule }: IrrigationScheduleProps) => {
             <ScheduleTable cycles={currentItems} />
 
             {totalPages > 1 && (
-              <Box className={styles.pagination}>
+              <div className={styles.pagination}>
                 <Pagination
                   count={totalPages}
                   page={currentPage}
                   onChange={(_, page) => setCurrentPage(page)}
                 />
-              </Box>
+              </div>
             )}
           </>
         ) : (
           <EmptySchedule />
         )}
-      </Box>
-    </Paper>
+      </div>
+    </div>
   );
 };
 

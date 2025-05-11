@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import { Container, Box } from "@mui/material";
 import IrrigationForm from "@/components/IrrigationForm";
 import IrrigationSchedule from "@/components/IrrigationSchedule";
 import Header from "@/components/Header";
@@ -9,23 +7,23 @@ import styles from "./Index.module.css";
 
 const Index = () => {
   const [schedule, setSchedule] = useState<IrrigationCycle[]>([]);
-  
+
   return (
-    <Box className={styles.container}>
-      <Container className={styles.content}>
+    <div className={styles.container}>
+      <div className={styles.content}>
         <Header />
-        
-        <Box className={styles.grid}>
-          <Box>
+
+        <div className={styles.grid}>
+          <div className={styles.form}>
             <IrrigationForm setSchedule={setSchedule} />
-          </Box>
-          
-          <Box>
+          </div>
+
+          <div className={styles.schedule}>
             <IrrigationSchedule schedule={schedule} />
-          </Box>
-        </Box>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

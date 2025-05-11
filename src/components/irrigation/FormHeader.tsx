@@ -1,6 +1,3 @@
-
-import React from "react";
-import { Box, Typography } from "@mui/material";
 import styles from "./FormHeader.module.css";
 
 interface FormHeaderProps {
@@ -9,11 +6,9 @@ interface FormHeaderProps {
 
 const FormHeader = ({ title }: FormHeaderProps) => {
   return (
-    <Box className={styles.formHeader}>
-      <Typography variant="h6" className={styles.formTitle}>
-        {title}
-      </Typography>
-    </Box>
+    <div className={styles.formHeader}>
+      <p className={styles.formTitle}>{title}</p>
+    </div>
   );
 };
 

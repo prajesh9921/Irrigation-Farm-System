@@ -29,7 +29,6 @@ const useScheduleFiltering = (liveSchedule: IrrigationCycle[]) => {
     }
   }, [liveSchedule]);
 
-  // Apply filters
   useEffect(() => {
     let result = [...liveSchedule];
     

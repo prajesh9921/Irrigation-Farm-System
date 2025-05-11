@@ -1,6 +1,6 @@
 
 import React from "react";
-import { TextField, InputLabel, Box } from "@mui/material";
+import { TextField, InputLabel} from "@mui/material";
 import styles from "./FormField.module.css";
 
 interface TimeFieldProps {
@@ -21,7 +21,7 @@ const TimeField = ({
   placeholder
 }: TimeFieldProps) => {
   return (
-    <Box className={styles.formGroup}>
+    <div className={styles.formGroup}>
       <InputLabel htmlFor={id} className={styles.formLabel}>
         {label}
       </InputLabel>
@@ -34,7 +34,7 @@ const TimeField = ({
         fullWidth
         size="small"
       />
-    </Box>
+    </div>
   );
 };
 
