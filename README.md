@@ -6,7 +6,7 @@ The **Farm Irrigation System** is an irrigation scheduling system designed to ma
 
 ### Deployed Link
 
-Live link: www.test.com
+Live link: https://irrigationfarmsystem.netlify.app/
 
 ## Getting Started
 
@@ -16,8 +16,7 @@ Follow these steps to run the application locally:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd farm-flow-scheduler
+   git clone https://github.com/prajesh9921/Irrigation-Farm-System.git
 
 2. Install Dependencies:
    ```bash
@@ -90,3 +89,7 @@ Contains the staring code of the application
 
 ```app.tsx```
 Contains all the routing related code.
+
+### Images
+![Screenshot 2025-05-11 191807](https://github.com/user-attachments/assets/eea59acf-5b93-4e8f-baab-19b8e1ebd3af)
+![Screenshot 2025-05-11 191845](https://github.com/user-attachments/assets/fc95a92c-c22d-42f8-9108-64c8782c7c90)
